@@ -1,6 +1,6 @@
 import React, { Suspense, useState } from 'react';
-import Dashboard from './components/Dashboard';
-import UserProfile from './components/UserProfile';
+// import Dashboard from './components/Dashboard';
+// import UserProfile from './components/UserProfile';
 
 // 範例1：使用純 Dynamic Import (不使用 React.lazy)
 function DynamicImportExample() {
@@ -11,7 +11,7 @@ function DynamicImportExample() {
   const loadHeavyComponent = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // 模擬動態導入一個重型組件
       const module = await new Promise((resolve) => {
@@ -36,7 +36,7 @@ function DynamicImportExample() {
           });
         }, 1500);
       });
-      
+
       setComponent(() => module.default);
     } catch (err) {
       console.log('err: ', err);
@@ -88,8 +88,8 @@ function DynamicImportExample() {
       )}
 
       {Component && (
-        <Component 
-          title="動態載入的組件" 
+        <Component
+          title="動態載入的組件"
           data={[
             { label: '用戶數', value: '1,234' },
             { label: '訂單數', value: '567' },
@@ -142,26 +142,29 @@ function ReactLazyExample() {
     switch (activeComponent) {
       case 'dashboard':
         return (
-        //   <Suspense fallback={<SuspenseLoader message="載入儀表板中..." />}>
-        //     <LazyDashboard />
-            <Dashboard />
-        //   </Suspense>
+          <Suspense fallback={<SuspenseLoader message="載入儀表板中..." />}>
+            <LazyDashboard />
+          </Suspense>
         );
       case 'profile':
         return (
-        //   <Suspense fallback={<SuspenseLoader message="載入用戶資料中..." />}>
-        //     <LazyUserProfile />
-            <UserProfile />
-        //   </Suspense>
+          <Suspense fallback={<SuspenseLoader message="載入用戶資料中..." />}>
+            <LazyUserProfile />
+          </Suspense>
         );
       default:
         return (
-          <div className="p-6 bg-gray-100 rounded-lg text-center">
-            <div className="text-4xl mb-3">🚀</div>
-            <h3 className="text-xl font-semibold mb-2">選擇要載入的組件</h3>
-            <p className="text-gray-600">點擊上方按鈕體驗 React.lazy 懶載入</p>
-          </div>
+          <Suspense fallback={<SuspenseLoader message="載入儀表板中..." />}>
+            <LazyDashboard />
+          </Suspense>
         );
+        // return (
+        //   <div className="p-6 bg-gray-100 rounded-lg text-center">
+        //     <div className="text-4xl mb-3">🚀</div>
+        //     <h3 className="text-xl font-semibold mb-2">選擇要載入的組件</h3>
+        //     <p className="text-gray-600">點擊上方按鈕體驗 React.lazy 懶載入</p>
+        //   </div>
+        // );
     }
   };
 
@@ -172,8 +175,8 @@ function ReactLazyExample() {
         <button
           onClick={() => setActiveComponent(activeComponent === 'dashboard' ? null : 'dashboard')}
           className={`px-4 py-2 rounded transition-colors ${
-            activeComponent === 'dashboard' 
-              ? 'bg-green-500 text-white' 
+            activeComponent === 'dashboard'
+              ? 'bg-green-500 text-white'
               : 'bg-gray-200 hover:bg-gray-300'
           }`}
         >
@@ -182,8 +185,8 @@ function ReactLazyExample() {
         <button
           onClick={() => setActiveComponent(activeComponent === 'profile' ? null : 'profile')}
           className={`px-4 py-2 rounded transition-colors ${
-            activeComponent === 'profile' 
-              ? 'bg-pink-500 text-white' 
+            activeComponent === 'profile'
+              ? 'bg-pink-500 text-white'
               : 'bg-gray-200 hover:bg-gray-300'
           }`}
         >
@@ -205,15 +208,15 @@ export default function CodeSplittingDemo() {
       </h1>
 
       <DynamicImportExample />
-      
+
       <hr className="my-8 border-gray-300" />
-      
+
       <ReactLazyExample />
 
       {/* 技術差異說明 */}
       <div className="mt-8 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
         <h3 className="text-lg font-bold text-yellow-800 mb-4">技術差異說明</h3>
-        
+
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <h4 className="font-semibold text-yellow-700 mb-2">🔧 Dynamic Import</h4>
@@ -226,7 +229,7 @@ export default function CodeSplittingDemo() {
               <li>• <strong>每次調用都會重新載入</strong></li>
             </ul>
           </div>
-          
+
           <div>
             <h4 className="font-semibold text-yellow-700 mb-2">⚛️ React.lazy + Suspense</h4>
             <ul className="text-sm text-yellow-600 space-y-1">
