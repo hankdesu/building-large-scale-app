@@ -5,14 +5,23 @@ export async function nativeFetchRequest({
   headers = { 'content-type': 'application/json' },
   method = 'GET',
   body,
+  params,
 }) {
   try {
+    let formatUrl = url;
     const options = {
       method,
       headers,
       ...(body && method !== 'GET' ? { body: JSON.stringify(body) } : {}),
     };
-    const response = await fetch(url, options);
+
+    if (params) {
+      const paramsObject = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => paramsObject.append(key, value));
+      formatUrl = `${url}?${paramsObject}`;
+    }
+
+    const response = await fetch(formatUrl, options);
 
     if (!response.ok) {
       throw new Error('Response failed!');
@@ -23,6 +32,7 @@ export async function nativeFetchRequest({
     return data;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 
@@ -31,6 +41,7 @@ export async function axiosFetchRequest({
   headers = 'content-type',
   method = 'get',
   body,
+  params,
 }) {
   try {
     const options = {
@@ -38,12 +49,13 @@ export async function axiosFetchRequest({
       headers,
       method,
       data: body,
+      params,
     };
     const response = await axios.request(options);
 
-    console.log('response: ', response);
     return response.data;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }

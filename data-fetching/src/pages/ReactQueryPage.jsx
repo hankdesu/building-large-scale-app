@@ -1,8 +1,9 @@
 // import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 
 import { getRandomIntInclusive } from '../utils/helper';
+import usePokemonQuery from '../hooks/usePokemonQuery';
 
 async function fetchPokemon() {
   const id = getRandomIntInclusive(1, 151);
@@ -24,19 +25,20 @@ async function fetchPokemon() {
 // };
 
 function ReactQueryPage() {
+  const { data: pokemon, isLoading } = usePokemonQuery();
 //   const [defer, setDefer] = useState(false);
-  const {
-    data: pokemon,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['pokemon'],
-    queryFn: fetchPokemon,
+  // const {
+  //   data: pokemon,
+  //   isLoading,
+  //   isError,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ['pokemon'],
+  //   queryFn: fetchPokemon,
     // staleTime: 1000 * 60,
     // placeholderData,
     // enabled: defer
-  });
+  // });
 
 //   useEffect(() => {
 //     if (!defer) {
@@ -46,9 +48,9 @@ function ReactQueryPage() {
 //     }
 //   }, [defer]);
 
-  if (isError) {
-    console.error(error);
-  }
+  // if (isError) {
+  //   console.error(error);
+  // }
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -59,8 +61,8 @@ function ReactQueryPage() {
       <h2>
         {pokemon?.id}
         <br />
-        {pokemon?.name[0].toUpperCase()}
-        {pokemon?.name.slice(1)}
+        {pokemon?.name?.[0]?.toUpperCase()}
+        {pokemon?.name?.slice(1)}
       </h2>
       <div style={{ width: '475px', height: '475px' }}>
         <img

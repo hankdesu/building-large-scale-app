@@ -7,9 +7,9 @@ function App() {
 
   return (
     <>
-      <FetchPage />
+      {/* <FetchPage /> */}
       {/* <AxiosPage /> */}
-      {/* <ReactQueryPage /> */}
+      <ReactQueryPage />
     </>
   )
 }
