@@ -16,3 +16,8 @@ createRoot(document.getElementById('root')).render(
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 )
+
+// if (process.env.NODE_ENV === 'development') {
+//   const { worker } = await import('./mocks/browser');
+//   worker.start();
+// }

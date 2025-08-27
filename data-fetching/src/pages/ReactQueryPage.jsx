@@ -1,9 +1,11 @@
 // import { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { useQuery } from '@tanstack/react-query';
+import { faker } from '@faker-js/faker';
 
 import { getRandomIntInclusive } from '../utils/helper';
 import usePokemonQuery from '../hooks/usePokemonQuery';
+import useUserMutation from '../hooks/useUserMutation';
 
 async function fetchPokemon() {
   const id = getRandomIntInclusive(1, 151);
@@ -26,7 +28,16 @@ async function fetchPokemon() {
 
 function ReactQueryPage() {
   const { data: pokemon, isLoading } = usePokemonQuery();
-//   const [defer, setDefer] = useState(false);
+  const { mutate } = useUserMutation();
+
+  function handleClick() {
+    mutate({
+      name: faker.person.fullName(),
+      hometown: faker.location.city(),
+    });
+  }
+
+  //   const [defer, setDefer] = useState(false);
   // const {
   //   data: pokemon,
   //   isLoading,
@@ -35,18 +46,18 @@ function ReactQueryPage() {
   // } = useQuery({
   //   queryKey: ['pokemon'],
   //   queryFn: fetchPokemon,
-    // staleTime: 1000 * 60,
-    // placeholderData,
-    // enabled: defer
+  // staleTime: 1000 * 60,
+  // placeholderData,
+  // enabled: defer
   // });
 
-//   useEffect(() => {
-//     if (!defer) {
-//         setTimeout(() => {
-//             setDefer(!defer);
-//         }, 2000);
-//     }
-//   }, [defer]);
+  //   useEffect(() => {
+  //     if (!defer) {
+  //         setTimeout(() => {
+  //             setDefer(!defer);
+  //         }, 2000);
+  //     }
+  //   }, [defer]);
 
   // if (isError) {
   //   console.error(error);
@@ -70,6 +81,7 @@ function ReactQueryPage() {
           src={pokemon?.sprites?.other?.['official-artwork']?.front_default}
         />
       </div>
+      <button onClick={handleClick}>Add user</button>
     </>
   );
 }

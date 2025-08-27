@@ -2,26 +2,37 @@ import axios from 'axios';
 
 export async function nativeFetchRequest({
   url = '',
-  headers = { 'content-type': 'application/json' },
+  headers = { 'Content-Type': 'application/json' },
   method = 'GET',
   body,
-  params,
+  params = {},
+  ...args
 }) {
   try {
-    let formatUrl = url;
     const options = {
       method,
       headers,
       ...(body && method !== 'GET' ? { body: JSON.stringify(body) } : {}),
+      ...args,
     };
 
-    if (params) {
-      const paramsObject = new URLSearchParams();
-      Object.entries(params).forEach(([key, value]) => paramsObject.append(key, value));
-      formatUrl = `${url}?${paramsObject}`;
-    }
+    const paramsStr = Object.entries(params)
+      .map(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.map(
+            (val, index) =>
+              `${encodeURIComponent(`${key}[${index}]`)}=${encodeURIComponent(
+                `${val}`
+              )}`
+          ).join('&');
+        }
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+      })
+      .join('&');
 
-    const response = await fetch(formatUrl, options);
+    const formattedUrl = paramsStr ? `${url}?${paramsStr}` : url;
+
+    const response = await fetch(formattedUrl, options);
 
     if (!response.ok) {
       throw new Error('Response failed!');
@@ -38,7 +49,7 @@ export async function nativeFetchRequest({
 
 export async function axiosFetchRequest({
   url = '',
-  headers = 'content-type',
+  headers = { 'Content-Type': 'application/json' },
   method = 'get',
   body,
   params,
@@ -50,6 +61,23 @@ export async function axiosFetchRequest({
       method,
       data: body,
       params,
+    };
+    const response = await axios.request(options);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function graphqlFetchRequest({ query }) {
+    try {
+    const options = {
+      baseURL: '/graphql',
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      data: { query },
     };
     const response = await axios.request(options);
 

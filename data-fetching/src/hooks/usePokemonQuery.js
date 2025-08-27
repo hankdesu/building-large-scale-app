@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchPokemon } from "../apis/pokemon";
+import { useQuery } from '@tanstack/react-query';
+
+import { fetchPokemon } from '../apis/pokemon';
 
 export default function usePokemonQuery() {
   return useQuery({
