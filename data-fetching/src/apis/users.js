@@ -33,12 +33,12 @@ export async function graphqlLatestUser() {
     users {
       id
       name
+      hometown
     }
   }
 `;
 
   const data = await graphqlFetchRequest({ query });
-  console.log('data: ', data);
 
-  return data.pop();
+  return data.users;
 }

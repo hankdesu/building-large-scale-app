@@ -6,5 +6,6 @@ export default function useLatestUserQuery(graphql = false) {
   return useQuery({
     queryKey: ['user'],
     queryFn: graphql ? graphqlLatestUser : fetchLatestUser,
+    retry: 1,
   });
 }

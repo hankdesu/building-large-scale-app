@@ -1,17 +1,22 @@
 import useLatestUserQuery from '../hooks/useLatestUserQuery';
 
 function Header() {
-  // const { data: user, isLoading } = useLatestUserQuery(true);
-  const { data: user, isLoading } = useLatestUserQuery();
+  const { data: users, isLoading } = useLatestUserQuery(true);
+  // const { data: user, isLoading } = useLatestUserQuery();
 
   if (isLoading) {
     return <span>Loading...</span>;
   }
   return (
-    <div style={{ position: 'absolute', top: '0px', fontWeight: 'bold' }}>
-      <span>
+    <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', top: '0px', fontWeight: 'bold' }}>
+      {users?.map(({ id, name, hometown }) => (
+        <span>
+          {id}: {name} from {hometown}
+        </span>
+      ))}
+      {/* <span>
         {user?.id}: {user?.name} from {user?.hometown}
-      </span>
+      </span> */}
     </div>
   );
 }
